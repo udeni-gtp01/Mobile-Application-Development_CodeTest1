@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import lk.lnbti.contactlist.ui.theme.ContactListTheme
 import lk.lnbti.contactlist.ui.view.ContactListScreen
 
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
 fun ContactListApp() {
     ContactListTheme {
         var currentScreen: AppDestination by remember { mutableStateOf(ContactList) }
+        val navController= rememberNavController()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

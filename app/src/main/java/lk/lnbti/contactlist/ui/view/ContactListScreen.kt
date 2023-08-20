@@ -17,5 +17,5 @@ fun ContactListScreen(modifier: Modifier = Modifier){
 
 @Composable
 fun ContactList(){
-    Text(text = "Contact 1")
+    Text(text = "Contact 2")
 }

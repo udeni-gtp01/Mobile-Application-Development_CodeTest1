@@ -15,7 +15,23 @@ object ContactData{
             phone = "12345"
         ),
         Contact(
-            name = "Iresha",
+            name = "Sunil",
+            phone = "67890"
+        ),
+        Contact(
+            name = "Nimal",
+            phone = "12345"
+        ),
+        Contact(
+            name = "Gayani",
+            phone = "67890"
+        ),
+        Contact(
+            name = "San",
+            phone = "12345"
+        ),
+        Contact(
+            name = "Dee",
             phone = "67890"
         )
     )

@@ -36,7 +36,6 @@ fun ContactListApp() {
             color = MaterialTheme.colorScheme.background
         ) {
 
-           // currentScreen.screen()
             AppNavHost(navController = navController)
             navController.navigateSingleTopTo(currentScreen.route)
         }

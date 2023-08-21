@@ -1,9 +1,7 @@
 package lk.lnbti.contactlist.ui.view
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +13,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -24,24 +21,26 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import lk.lnbti.contactlist.ContactList
-import lk.lnbti.contactlist.view_model.AddContactViewModel
 import lk.lnbti.contactlist.R
+import lk.lnbti.contactlist.view_model.AddContactViewModel
 
 @Composable
-fun AddContactScreen(navController: NavHostController){
+fun AddContactScreen(navController: NavHostController) {
     val addContactViewModel: AddContactViewModel = viewModel()
 
-    if (addContactViewModel.isContactSaved) {
+    if (addContactViewModel.isAddContactDone) {
         // Navigate back to ContactListScreen
         navController.popBackStack(ContactList.route, inclusive = false)
     } else {
-        NewContactForm(addContactViewModel)
+        NewContactForm(
+            addContactViewModel = addContactViewModel)
     }
 }
+
 @Composable
 fun NewContactForm(
     addContactViewModel: AddContactViewModel
-){
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -99,7 +98,9 @@ fun NewContactForm(
                 )
             }
             OutlinedButton(
-                onClick = { addContactViewModel.cancelNewContact() },
+                onClick = {
+                    addContactViewModel.cancelNewContact()
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(

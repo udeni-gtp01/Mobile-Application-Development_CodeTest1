@@ -11,7 +11,7 @@ import lk.lnbti.contactlist.data.ContactData
 class AddContactViewModel : ViewModel() {
     var newContactName by mutableStateOf("")
     var newContactPhone by mutableStateOf("")
-    var isContactSaved by mutableStateOf(false)
+    var isAddContactDone by mutableStateOf(false)
 
     fun updateContactName(contactName: String) {
         newContactName = contactName
@@ -22,11 +22,13 @@ class AddContactViewModel : ViewModel() {
     }
 
     fun saveNewContact() {
-        ContactData.addContact(Contact(newContactName,newContactPhone))
-        isContactSaved = true
+        ContactData.addContact(Contact(newContactName, newContactPhone))
+        isAddContactDone = true
     }
 
     fun cancelNewContact() {
-
+        newContactName = ""
+        newContactPhone = ""
+        isAddContactDone = true
     }
 }

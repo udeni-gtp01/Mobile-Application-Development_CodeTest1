@@ -18,20 +18,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.data.ContactData
 
 @Composable
-fun ContactListScreen(modifier: Modifier = Modifier){
+fun ContactListScreen(onContactItemClicked: (String) -> Unit={},modifier: Modifier = Modifier){
     Box(modifier = Modifier){
         Column {
-            ContactList()
+            ContactList(onContactItemClicked)
         }
     }
 }
 
 @Composable
 fun ContactList(
+    onContactItemClicked: (String) -> Unit,
     listState: LazyListState = rememberLazyListState()
 ){
     var contacts =ContactData.contacts
@@ -40,7 +42,7 @@ fun ContactList(
     ){
         contacts?.let {
             items(contacts){
-                ListItem(item = it)
+                ListItem(item = it,onContactItemClicked=onContactItemClicked)
             }
         }
     }
@@ -48,10 +50,12 @@ fun ContactList(
 
 @Composable
 fun ListItem(
-    item:Contact
+    item:Contact,
+    onContactItemClicked: (String) -> Unit
 ){
     Row (
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable { onContactItemClicked(item.name) }
     ){
         Text(text = item.name)
     }

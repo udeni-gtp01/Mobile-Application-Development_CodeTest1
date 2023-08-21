@@ -35,4 +35,8 @@ object ContactData{
             phone = "67890"
         )
     )
+    fun getContact(contactId: String?): Contact {
+        return contacts.first { it.name == contactId }
+    }
 }
+

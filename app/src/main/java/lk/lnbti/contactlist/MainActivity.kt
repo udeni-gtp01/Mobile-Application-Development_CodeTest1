@@ -1,10 +1,12 @@
 package lk.lnbti.contactlist
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,20 +27,27 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ContactListApp() {
     ContactListTheme {
         var currentScreen: AppDestination by remember { mutableStateOf(ContactList) }
         val navController = rememberNavController()
-        Surface(
+       /* Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
 
             AppNavHost(navController = navController)
             navController.navigateSingleTopTo(currentScreen.route)
-        }
-
+        }*/
+        Scaffold(
+            content = {
+                AppNavHost(
+                    navController = navController
+                )
+            }
+        )
     }
 }

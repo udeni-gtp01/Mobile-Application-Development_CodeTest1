@@ -34,14 +34,6 @@ fun ContactListApp() {
     ContactListTheme {
         var currentScreen: AppDestination by remember { mutableStateOf(ContactList) }
         val navController = rememberNavController()
-       /* Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-
-            AppNavHost(navController = navController)
-            navController.navigateSingleTopTo(currentScreen.route)
-        }*/
         Scaffold(
             content = {
                 AppNavHost(

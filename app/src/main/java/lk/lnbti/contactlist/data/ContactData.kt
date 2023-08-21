@@ -9,7 +9,7 @@ data class Contact(
 )
 
 object ContactData{
-    val contacts:List<Contact> = listOf(
+    val contacts:MutableList<Contact> = mutableListOf(
         Contact(
             name = "Udeni",
             phone = "12345"
@@ -37,6 +37,9 @@ object ContactData{
     )
     fun getContact(contactId: String?): Contact {
         return contacts.first { it.name == contactId }
+    }
+    fun addContact(contact:Contact) {
+        contacts.add(contact)
     }
 }
 

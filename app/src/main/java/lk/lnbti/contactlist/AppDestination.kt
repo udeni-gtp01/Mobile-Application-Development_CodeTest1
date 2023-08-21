@@ -23,3 +23,7 @@ object ContactInfo : AppDestination {
         navArgument(contactIdArg) { type = NavType.StringType }
     )
 }
+
+object AddContact : AppDestination {
+    override val route = "add_contact"
+}

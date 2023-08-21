@@ -5,6 +5,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import lk.lnbti.contactlist.ui.view.AddContactScreen
 import lk.lnbti.contactlist.ui.view.ContactInfoScreen
 import lk.lnbti.contactlist.ui.view.ContactListScreen
 
@@ -15,7 +16,8 @@ fun AppNavHost(navController: NavHostController) {
             ContactListScreen(
                 onContactItemClicked = {contactId->
                     navController.navigateToContactInfo(contactId)
-                }
+                },
+                onNewContactClicked = {navController.navigateSingleTopTo(AddContact.route)}
             )
         }
 
@@ -29,6 +31,9 @@ fun AppNavHost(navController: NavHostController) {
                 navBackStackEntry.arguments?.getString(ContactInfo.contactIdArg)
             // Pass contactId to ContactInfoScreen
             ContactInfoScreen(contactId)
+        }
+        composable(route = AddContact.route) {
+            AddContactScreen(navController)
         }
     }
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Contact List</string>
+    <string name="submit">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -13,14 +13,18 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.data.ContactData
+import lk.lnbti.contactlist.view_model.ContactListViewModel
 
 @Composable
 fun ContactListScreen(onContactItemClicked: (String) -> Unit={},modifier: Modifier = Modifier){
@@ -34,9 +38,11 @@ fun ContactListScreen(onContactItemClicked: (String) -> Unit={},modifier: Modifi
 @Composable
 fun ContactList(
     onContactItemClicked: (String) -> Unit,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
+    contactListViewModel: ContactListViewModel= viewModel()
 ){
-    var contacts =ContactData.contacts
+    val contactListUiState by contactListViewModel.uiState.collectAsState()
+    var contacts =contactListUiState.contactList
     LazyColumn(
         state = listState
     ){

@@ -1,6 +1,7 @@
 package lk.lnbti.contactlist.ui.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,7 +82,7 @@ fun ContactListScreen(
 fun AddNewContactButton(onNewContactClicked: () -> Unit) {
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),
-        contentColor = Color.White,
+        //contentColor = Color.White,
         onClick = onNewContactClicked
     ) {
         Icon(Icons.Default.Add, contentDescription = null)

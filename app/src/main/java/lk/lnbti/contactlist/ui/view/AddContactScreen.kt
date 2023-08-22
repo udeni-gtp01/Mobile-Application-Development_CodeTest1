@@ -52,7 +52,13 @@ fun AddContactScreen(
                         value = addContactViewModel.newContactName,
                         singleLine = true,
                         onValueChange = { addContactViewModel.updateContactName(it) },
-                        label = { Text("Name") },
+                        label = {
+                            if (addContactViewModel.isValidContactName) {
+                                Text(stringResource(R.string.contact_name))
+                            } else {
+                                Text(stringResource(R.string.invalid_contact_name))
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -64,7 +70,13 @@ fun AddContactScreen(
                         value = addContactViewModel.newContactPhone,
                         singleLine = true,
                         onValueChange = { addContactViewModel.updateContactPhone(it) },
-                        label = { Text("Phone") },
+                        label = {
+                            if (addContactViewModel.isValidPhone) {
+                                Text(stringResource(R.string.contact_phone))
+                            } else {
+                                Text(stringResource(R.string.invalid_contact_phone))
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -78,7 +90,9 @@ fun AddContactScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    onSaveButtonClicked(addContactViewModel.saveNewContact())
+                    if (addContactViewModel.isValidContactName && addContactViewModel.isValidPhone) {
+                        onSaveButtonClicked(addContactViewModel.saveNewContact())
+                    }
                 }
             ) {
                 Text(

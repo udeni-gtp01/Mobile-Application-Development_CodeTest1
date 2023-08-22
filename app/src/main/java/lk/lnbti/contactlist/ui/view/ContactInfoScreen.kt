@@ -110,18 +110,4 @@ fun ContactInfoScreen(
     }
 }
 
-//@Composable
-//fun findContact(
-//    //contactViewModel: ContactViewModel,
-//    contactViewModel: ContactViewModel = viewModel(),
-//    contactName: String?,
-//    onContactInfoCancel: () -> Unit
-//) {
-//    if (contactViewModel.isContactEditable) {
-//        EditContactSection(contactViewModel = contactViewModel)
-//    } else {
-//        ViewContactSection(contactViewModel = contactViewModel, contactName = contactName, onContactInfoCancel = onContactInfoCancel)
-//    }
-//}
-
 

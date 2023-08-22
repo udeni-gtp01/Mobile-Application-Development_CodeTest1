@@ -5,4 +5,8 @@
     <string name="edit">Edit</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="contact_name">Contact name</string>
+    <string name="invalid_contact_name">Enter valid contact name</string>
+    <string name="contact_phone">Phone number</string>
+    <string name="invalid_contact_phone">Enter valid phone number</string>
 </resources>

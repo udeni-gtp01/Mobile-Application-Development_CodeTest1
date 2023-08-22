@@ -42,18 +42,18 @@ fun ContactInfoScreen(
                     Spacer(Modifier.height(32.dp))
                     Text(
                         modifier = Modifier.fillParentMaxWidth(),
-                        text = "Contact Information",
-                        style = MaterialTheme.typography.headlineMedium,
+                        text = stringResource(id = R.string.contact_information),
+                        style = MaterialTheme.typography.headlineLarge,
                         textAlign = TextAlign.Center
                     )
                 }
                 item {
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(32.dp))
                     contactInfoViewModel.contact?.name?.let {
                         Text(
                             modifier = Modifier.fillParentMaxWidth(),
                             text = it,
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -64,7 +64,7 @@ fun ContactInfoScreen(
                         Text(
                             modifier = Modifier.fillParentMaxWidth(),
                             text = it,
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center
                         )
                     }

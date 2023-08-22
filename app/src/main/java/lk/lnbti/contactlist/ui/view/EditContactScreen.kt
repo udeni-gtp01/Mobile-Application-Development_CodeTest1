@@ -43,13 +43,13 @@ fun EditContactScreen(
                     Spacer(Modifier.height(32.dp))
                     Text(
                         modifier = Modifier.fillParentMaxWidth(),
-                        text = "Contact Information",
-                        style = MaterialTheme.typography.headlineMedium,
+                        text = stringResource(id = R.string.edit_contact),
+                        style = MaterialTheme.typography.headlineLarge,
                         textAlign = TextAlign.Center
                     )
                 }
                 item {
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(32.dp))
                     TextField(
                         value = editContactViewModel.updatedContactName,
                         singleLine = true,
@@ -67,7 +67,7 @@ fun EditContactScreen(
                     )
                 }
                 item {
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(32.dp))
                     TextField(
                         value = editContactViewModel.updatedContactPhone,
                         singleLine = true,

@@ -9,4 +9,7 @@
     <string name="invalid_contact_name">Enter valid contact name</string>
     <string name="contact_phone">Phone number</string>
     <string name="invalid_contact_phone">Enter valid phone number</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="add_new_contact">Add New Contact</string>
+    <string name="edit_contact">Edit Contact</string>
 </resources>

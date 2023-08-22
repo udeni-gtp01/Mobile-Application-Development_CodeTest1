@@ -1,14 +1,14 @@
 package lk.lnbti.contactlist.data
 
-import androidx.compose.runtime.Immutable
+import android.util.Log
 
 data class Contact(
     var name: String,
     var phone: String,
 )
 
-object ContactData{
-    val contacts:MutableList<Contact> = mutableListOf(
+object ContactData {
+    val contacts: MutableList<Contact> = mutableListOf(
         Contact(
             name = "Udeni",
             phone = "12345"
@@ -34,19 +34,30 @@ object ContactData{
             phone = "67890"
         )
     )
-    fun getContact(contactId: String?): Contact {
-        return contacts.first { it.name == contactId }
+
+    fun getContact(contactName: String?): Contact? {
+        try {
+            return contacts.first { it.name == contactName }
+        } catch (e: Exception) {
+            Log.d("Search contact",e.message.toString())
+            return null
+        }
     }
-    fun addContact(contact:Contact) {
+
+    fun addContact(contact: Contact) {
         contacts.add(contact)
     }
 
-    fun updateContact(originalContactName:String,newContact:Contact) {
-        var contact=contacts.find { it.name==originalContactName }
+    fun updateContact(originalContactName: String, updatedContact: Contact) {
+        var contact = contacts.find { it.name == originalContactName }
         contact?.let {
-            it.name=newContact.name
-            it.phone=newContact.phone
+            it.name = updatedContact.name
+            it.phone = updatedContact.phone
         }
+    }
+
+    fun deleteContact(contactName: String) {
+        contacts.remove(contacts.first { it.name == contactName })
     }
 }
 

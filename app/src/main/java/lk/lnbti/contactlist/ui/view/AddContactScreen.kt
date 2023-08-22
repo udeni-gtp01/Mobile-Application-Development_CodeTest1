@@ -19,27 +19,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import lk.lnbti.contactlist.ContactList
 import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.view_model.AddContactViewModel
 
 @Composable
-fun AddContactScreen(navController: NavHostController) {
-    val addContactViewModel: AddContactViewModel = viewModel()
-
-    if (addContactViewModel.isAddContactDone) {
-        // Navigate back to ContactListScreen
-        navController.popBackStack(ContactList.route, inclusive = false)
-    } else {
-        NewContactForm(
-            addContactViewModel = addContactViewModel)
-    }
-}
-
-@Composable
-fun NewContactForm(
-    addContactViewModel: AddContactViewModel
+fun AddContactScreen(
+    addContactViewModel: AddContactViewModel = viewModel(),
+    onSaveButtonClicked: (String) -> Unit,
+    onCancelButtonClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -90,7 +77,9 @@ fun NewContactForm(
         ) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { addContactViewModel.saveNewContact() }
+                onClick = {
+                    onSaveButtonClicked(addContactViewModel.saveNewContact())
+                }
             ) {
                 Text(
                     text = stringResource(R.string.submit),
@@ -99,7 +88,8 @@ fun NewContactForm(
             }
             OutlinedButton(
                 onClick = {
-                    addContactViewModel.cancelNewContact()
+                    addContactViewModel.resetNewContact()
+                    onCancelButtonClicked()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

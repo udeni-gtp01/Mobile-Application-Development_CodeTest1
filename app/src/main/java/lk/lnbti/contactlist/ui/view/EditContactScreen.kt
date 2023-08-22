@@ -13,48 +13,23 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import lk.lnbti.contactlist.ContactInfo
-import lk.lnbti.contactlist.ContactList
 import lk.lnbti.contactlist.R
-import lk.lnbti.contactlist.data.Contact
-import lk.lnbti.contactlist.view_model.AddContactViewModel
-import lk.lnbti.contactlist.view_model.ContactInfoViewModel
-import lk.lnbti.contactlist.view_model.UpdateContactViewModel
+import lk.lnbti.contactlist.view_model.EditContactViewModel
 
 @Composable
-fun UpdateContactScreen(
-    navController: NavHostController,
-    contactName:String?,
-    onEditButtonClicked:() -> Unit = {},
-    onCancelButtonClicked:() -> Unit = {},
+fun EditContactScreen(
+    editContactViewModel: EditContactViewModel = viewModel(),
+    contactName: String?,
+    onCancelButtonClicked: (String) -> Unit,
+    onSaveButtonClicked: (String) -> Unit
 ) {
-
-    val updateContactViewModel: UpdateContactViewModel = viewModel()
-    val contact = remember(contactName) { updateContactViewModel.getContactByName(contactName) }
-    if (updateContactViewModel.isUpdateContactDone) {
-        // Navigate back to ContactListScreen
-        navController.popBackStack(ContactList.route, inclusive = false)
-    } else {
-        EditContactForm(
-            contact = contact,
-            updateContactViewModel = updateContactViewModel
-        )
-    }
-}
-
-@Composable
-fun EditContactForm(
-    contact:Contact,
-    updateContactViewModel: UpdateContactViewModel
-){
+    editContactViewModel.searchContact(contactName)
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -76,9 +51,9 @@ fun EditContactForm(
                 item {
                     Spacer(Modifier.height(16.dp))
                     TextField(
-                        value = updateContactViewModel.updatedContactName,
+                        value = editContactViewModel.updatedContactName,
                         singleLine = true,
-                        onValueChange = { updateContactViewModel.updateContactName(it) },
+                        onValueChange = { editContactViewModel.updateContactName(it) },
                         label = { Text("Name") },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -88,9 +63,9 @@ fun EditContactForm(
                 item {
                     Spacer(Modifier.height(16.dp))
                     TextField(
-                        value = updateContactViewModel.updatedContactPhone,
+                        value = editContactViewModel.updatedContactPhone,
                         singleLine = true,
-                        onValueChange = { updateContactViewModel.updateContactPhone(it) },
+                        onValueChange = { editContactViewModel.updateContactPhone(it) },
                         label = { Text("Name") },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -104,7 +79,9 @@ fun EditContactForm(
         ) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { updateContactViewModel.updateContact() }
+                onClick = {
+                    onSaveButtonClicked(editContactViewModel.saveContact())
+                }
             ) {
                 Text(
                     text = stringResource(R.string.save),
@@ -112,7 +89,9 @@ fun EditContactForm(
                 )
             }
             OutlinedButton(
-                onClick = { },
+                onClick = {
+                    onCancelButtonClicked(editContactViewModel.resetContact())
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(

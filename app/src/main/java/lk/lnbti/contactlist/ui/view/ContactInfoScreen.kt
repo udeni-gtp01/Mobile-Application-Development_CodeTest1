@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,41 +17,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import lk.lnbti.contactlist.ContactList
 import lk.lnbti.contactlist.R
-import lk.lnbti.contactlist.view_model.ContactViewModel
+import lk.lnbti.contactlist.view_model.ContactInfoViewModel
 
 @Composable
 fun ContactInfoScreen(
     contactName: String?,
-    navController: NavHostController,
-    contactViewModel: ContactViewModel = viewModel(),
+    contactInfoViewModel: ContactInfoViewModel = viewModel(),
+    onCancelButtonClicked: () -> Unit,
+    onDeleteButtonClicked: () -> Unit,
+    onEditButtonClicked: (String) -> Unit,
 ) {
-    if (contactViewModel.isContactClosed) {
-        navController.popBackStack(ContactList.route, inclusive = false)
-    } else {
-        findContact(contactName = contactName, contactViewModel = contactViewModel)
-    }
-}
-
-@Composable
-fun findContact(
-    contactViewModel: ContactViewModel,
-    contactName: String?,
-) {
-    if (contactViewModel.isContactEditable) {
-        EditContactSection(contactViewModel = contactViewModel)
-    } else {
-        contactViewModel.findContact(contactName = contactName)
-        ViewContactSection(contactViewModel = contactViewModel)
-    }
-}
-
-@Composable
-fun ViewContactSection(
-    contactViewModel: ContactViewModel,
-) {
+    contactInfoViewModel.searchContact(contactName)
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -74,21 +49,25 @@ fun ViewContactSection(
                 }
                 item {
                     Spacer(Modifier.height(16.dp))
-                    Text(
-                        modifier = Modifier.fillParentMaxWidth(),
-                        text = contactViewModel.newContactName,
-                        style = MaterialTheme.typography.headlineMedium,
-                        textAlign = TextAlign.Center
-                    )
+                    contactInfoViewModel.contact?.name?.let {
+                        Text(
+                            modifier = Modifier.fillParentMaxWidth(),
+                            text = it,
+                            style = MaterialTheme.typography.headlineMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
                 item {
                     Spacer(Modifier.height(16.dp))
-                    Text(
-                        modifier = Modifier.fillParentMaxWidth(),
-                        text = contactViewModel.newContactPhone,
-                        style = MaterialTheme.typography.headlineMedium,
-                        textAlign = TextAlign.Center
-                    )
+                    contactInfoViewModel.contact?.phone?.let {
+                        Text(
+                            modifier = Modifier.fillParentMaxWidth(),
+                            text = it,
+                            style = MaterialTheme.typography.headlineMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
@@ -97,15 +76,29 @@ fun ViewContactSection(
         ) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { contactViewModel.enableEditContact() }
+                onClick = { contactInfoViewModel.contact?.let { onEditButtonClicked(it.name) } }
             ) {
                 Text(
                     text = stringResource(R.string.edit),
                     fontSize = 16.sp
                 )
             }
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    contactInfoViewModel.deleteContact()
+                    onDeleteButtonClicked()
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.delete),
+                    fontSize = 16.sp
+                )
+            }
             OutlinedButton(
-                onClick = { contactViewModel.resetContact() },
+                onClick = {
+                    onCancelButtonClicked()
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -117,75 +110,18 @@ fun ViewContactSection(
     }
 }
 
-@Composable
-fun EditContactSection(
-    contactViewModel: ContactViewModel
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) {
-            LazyColumn(modifier = Modifier, contentPadding = PaddingValues(16.dp)) {
-                item {
-                    Spacer(Modifier.height(32.dp))
-                    Text(
-                        modifier = Modifier.fillParentMaxWidth(),
-                        text = "Contact Information",
-                        style = MaterialTheme.typography.headlineMedium,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                item {
-                    Spacer(Modifier.height(16.dp))
-                    TextField(
-                        value = contactViewModel.newContactName,
-                        singleLine = true,
-                        onValueChange = { contactViewModel.updateContactName(it) },
-                        label = { Text("Name") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                }
-                item {
-                    Spacer(Modifier.height(16.dp))
-                    TextField(
-                        value = contactViewModel.newContactPhone,
-                        singleLine = true,
-                        onValueChange = { contactViewModel.updateContactPhone(it) },
-                        label = { Text("Name") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                }
-            }
-        }
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { contactViewModel.updateContact() }
-            ) {
-                Text(
-                    text = stringResource(R.string.save),
-                    fontSize = 16.sp
-                )
-            }
-            OutlinedButton(
-                onClick = { contactViewModel.cancelEditContact() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.cancel),
-                    fontSize = 16.sp
-                )
-            }
-        }
-    }
-}
+//@Composable
+//fun findContact(
+//    //contactViewModel: ContactViewModel,
+//    contactViewModel: ContactViewModel = viewModel(),
+//    contactName: String?,
+//    onContactInfoCancel: () -> Unit
+//) {
+//    if (contactViewModel.isContactEditable) {
+//        EditContactSection(contactViewModel = contactViewModel)
+//    } else {
+//        ViewContactSection(contactViewModel = contactViewModel, contactName = contactName, onContactInfoCancel = onContactInfoCancel)
+//    }
+//}
+
+

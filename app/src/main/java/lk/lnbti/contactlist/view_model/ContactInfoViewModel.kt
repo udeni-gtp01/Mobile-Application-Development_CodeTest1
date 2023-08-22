@@ -7,15 +7,29 @@ import androidx.lifecycle.ViewModel
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.data.ContactData
 
+/**
+ * ViewModel class responsible for managing the UI state and
+ * interactions related to a specific contact's information.
+ */
 class ContactInfoViewModel : ViewModel() {
 
+    // Mutable state that holds the current contact information being displayed
     var contact by mutableStateOf<Contact?>(null)
+
+    /**
+     * Searches for the contact with the given name and updates the [contact] property if found.
+     *
+     * @param contactName The name of the contact to search for.
+     */
     fun searchContact(contactName: String?) {
         contactName?.let {
             contact = ContactData.getContact(it)
         }
     }
 
+    /**
+     * Deletes the currently displayed contact from the data source.
+     */
     fun deleteContact() {
         contact?.let {
             ContactData.deleteContact(

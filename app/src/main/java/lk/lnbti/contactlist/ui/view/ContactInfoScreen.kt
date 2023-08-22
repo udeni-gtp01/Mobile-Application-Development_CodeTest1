@@ -20,6 +20,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.view_model.ContactInfoViewModel
 
+/**
+ * Composable function for the Contact Information screen.
+ *
+ * @param contactName The name of the contact to display information for.
+ * @param contactInfoViewModel The [ContactInfoViewModel] used for managing the state and actions of the screen.
+ * @param onCancelButtonClicked Callback invoked when the cancel button is clicked.
+ * @param onDeleteButtonClicked Callback invoked when the delete button is clicked.
+ * @param onEditButtonClicked Callback invoked when the edit button is clicked, passing the contact's name.
+ */
 @Composable
 fun ContactInfoScreen(
     contactName: String?,
@@ -109,5 +118,3 @@ fun ContactInfoScreen(
         }
     }
 }
-
-

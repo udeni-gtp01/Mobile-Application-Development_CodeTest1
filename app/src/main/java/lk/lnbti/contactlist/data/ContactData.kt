@@ -2,12 +2,24 @@ package lk.lnbti.contactlist.data
 
 import android.util.Log
 
+/**
+ * Represents a contact with a name and phone number.
+ *
+ * @property name The name of the contact.
+ * @property phone The phone number of the contact.
+ */
 data class Contact(
     var name: String,
     var phone: String,
 )
 
+/**
+ * A singleton object that manages a list of contacts.
+ */
 object ContactData {
+    /**
+     * The list of contacts stored in memory.
+     */
     val contacts: MutableList<Contact> = mutableListOf(
         Contact(
             name = "Udeni",
@@ -47,19 +59,36 @@ object ContactData {
         ),
     )
 
+    /**
+     * Retrieves a contact by its name.
+     *
+     * @param contactName The name of the contact to retrieve.
+     * @return The [Contact] instance with the matching name, or null if not found.
+     */
     fun getContact(contactName: String?): Contact? {
         try {
             return contacts.first { it.name == contactName }
         } catch (e: Exception) {
-            Log.d("Search contact",e.message.toString())
+            Log.d("Search contact", e.message.toString())
             return null
         }
     }
 
+    /**
+     * Adds a new contact to the list.
+     *
+     * @param contact The [Contact] instance to be added.
+     */
     fun addContact(contact: Contact) {
         contacts.add(contact)
     }
 
+    /**
+     * Updates an existing contact with new information.
+     *
+     * @param originalContactName The name of the contact to be updated.
+     * @param updatedContact The updated [Contact] information.
+     */
     fun updateContact(originalContactName: String, updatedContact: Contact) {
         var contact = contacts.find { it.name == originalContactName }
         contact?.let {
@@ -68,6 +97,11 @@ object ContactData {
         }
     }
 
+    /**
+     * Deletes a contact by its name.
+     *
+     * @param contactName The name of the contact to be deleted.
+     */
     fun deleteContact(contactName: String) {
         contacts.remove(contacts.first { it.name == contactName })
     }

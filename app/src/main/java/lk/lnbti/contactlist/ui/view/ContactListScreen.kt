@@ -36,6 +36,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.view_model.ContactListViewModel
 
+/**
+ * Composable function for the Contact List screen.
+ *
+ * @param onContactItemClicked Callback invoked when a contact item is clicked, passing the contact's name.
+ * @param onNewContactClicked Callback invoked when the new contact button is clicked.
+ * @param modifier Modifier for custom styling.
+ */
 @Composable
 fun ContactListScreen(
     onContactItemClicked: (String) -> Unit,
@@ -52,12 +59,17 @@ fun ContactListScreen(
                 .padding(contentPadding)
         ) {
             Column {
-                ContactList(onContactItemClicked=onContactItemClicked, modifier = modifier)
+                ContactList(onContactItemClicked = onContactItemClicked, modifier = modifier)
             }
         }
     }
 }
 
+/**
+ * Composable function for the "Add New Contact" floating action button.
+ *
+ * @param onNewContactClicked Callback invoked when the button is clicked.
+ */
 @Composable
 fun AddNewContactButton(onNewContactClicked: () -> Unit) {
     val context = LocalContext.current
@@ -70,6 +82,14 @@ fun AddNewContactButton(onNewContactClicked: () -> Unit) {
     }
 }
 
+/**
+ * Composable function for the Contact List.
+ *
+ * @param modifier Modifier for custom styling.
+ * @param onContactItemClicked Callback invoked when a contact item is clicked, passing the contact's name.
+ * @param listState The [LazyListState] to manage the state of the LazyColumn.
+ * @param contactListViewModel The [ContactListViewModel] used to manage the UI state of the contact list.
+ */
 @Composable
 fun ContactList(
     modifier: Modifier = Modifier,
@@ -92,6 +112,12 @@ fun ContactList(
     }
 }
 
+/**
+ * Composable function for a single contact list item.
+ *
+ * @param item The [Contact] item to display.
+ * @param onContactItemClicked Callback invoked when the item is clicked, passing the contact's name.
+ */
 @Composable
 fun ListItem(
     item: Contact,
@@ -108,12 +134,11 @@ fun ListItem(
             .clickable { onContactItemClicked(item.name) }
     ) {
         Column {
-            Text(text = item.name,
+            Text(
+                text = item.name,
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black
             )
-
         }
-
     }
 }

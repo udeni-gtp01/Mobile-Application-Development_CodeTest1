@@ -10,10 +10,15 @@ import lk.lnbti.contactlist.ui.view.ContactInfoScreen
 import lk.lnbti.contactlist.ui.view.ContactListScreen
 import lk.lnbti.contactlist.ui.view.EditContactScreen
 
-
+/**
+ * Composable function responsible for hosting the navigation flow of the app.
+ *
+ * @param navController The [NavHostController] used for navigation between screens.
+ */
 @Composable
 fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = ContactList.route) {
+        // Contact List Screen
         composable(route = ContactList.route) {
             ContactListScreen(
                 onContactItemClicked = { contactName ->
@@ -22,7 +27,7 @@ fun AppNavHost(navController: NavHostController) {
                 onNewContactClicked = { navController.navigateSingleTopTo(AddContact.route) }
             )
         }
-
+// Contact Info Screen
         composable(
             route = ContactInfo.routeWithArgs,
             arguments = ContactInfo.arguments,
@@ -30,7 +35,7 @@ fun AppNavHost(navController: NavHostController) {
             // Retrieve the passed argument
             val contactName =
                 navBackStackEntry.arguments?.getString(ContactInfo.contactNameArg)
-            // Pass contactId to ContactInfoScreen
+            // Pass contact name to ContactInfoScreen
             ContactInfoScreen(
                 contactName = contactName,
                 onCancelButtonClicked = { navController.navigateSingleTopTo(ContactList.route) },
@@ -40,6 +45,7 @@ fun AppNavHost(navController: NavHostController) {
                 },
             )
         }
+        // Edit Contact Screen
         composable(
             route = EditContact.routeWithArgs,
             arguments = EditContact.arguments,
@@ -47,7 +53,7 @@ fun AppNavHost(navController: NavHostController) {
             // Retrieve the passed argument
             val contactName =
                 navBackStackEntry.arguments?.getString(EditContact.contactNameArg)
-            // Pass contactId to ContactInfoScreen
+            // Pass contact name to ContactInfoScreen
             EditContactScreen(
                 contactName = contactName,
                 onCancelButtonClicked = { contactName ->
@@ -58,6 +64,7 @@ fun AppNavHost(navController: NavHostController) {
                 },
             )
         }
+        // Add Contact Screen
         composable(route = AddContact.route) {
             AddContactScreen(
                 onSaveButtonClicked = { contactName ->
@@ -69,14 +76,17 @@ fun AppNavHost(navController: NavHostController) {
     }
 }
 
+// Extension function to navigate to Contact Info screen
 private fun NavHostController.navigateToContactInfo(contactName: String) {
     this.navigateSingleTopTo("${ContactInfo.route}/$contactName")
 }
 
+// Extension function to navigate to Edit Contact screen
 private fun NavHostController.navigateToEditContact(contactName: String) {
     this.navigateSingleTopTo("${EditContact.route}/$contactName")
 }
 
+// Extension function to navigate with single top behavior
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) { // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations

@@ -22,6 +22,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.view_model.EditContactViewModel
 
+/**
+ * Composable function for the Edit Contact screen.
+ *
+ * @param editContactViewModel The [EditContactViewModel] used to manage the UI state of editing a contact.
+ * @param contactName The name of the contact being edited.
+ * @param onCancelButtonClicked Callback invoked when the cancel button is clicked, passing the contact name.
+ * @param onSaveButtonClicked Callback invoked when the save button is clicked, passing the contact name.
+ */
 @Composable
 fun EditContactScreen(
     editContactViewModel: EditContactViewModel = viewModel(),

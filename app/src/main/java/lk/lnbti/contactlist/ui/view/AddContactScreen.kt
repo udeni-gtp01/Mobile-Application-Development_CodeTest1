@@ -22,6 +22,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.view_model.AddContactViewModel
 
+/**
+ * Composable function for the Add Contact screen.
+ *
+ * @param addContactViewModel The [AddContactViewModel] used for managing the state and actions of the screen.
+ * @param onSaveButtonClicked Callback invoked when the save button is clicked, passing the new contact's name.
+ * @param onCancelButtonClicked Callback invoked when the cancel button is clicked.
+ */
 @Composable
 fun AddContactScreen(
     addContactViewModel: AddContactViewModel = viewModel(),
@@ -115,4 +122,3 @@ fun AddContactScreen(
         }
     }
 }
-

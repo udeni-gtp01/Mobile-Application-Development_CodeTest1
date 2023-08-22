@@ -16,13 +16,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,8 +35,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.view_model.ContactListViewModel
 
@@ -72,7 +79,6 @@ fun ContactListScreen(
  */
 @Composable
 fun AddNewContactButton(onNewContactClicked: () -> Unit) {
-    val context = LocalContext.current
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),
         contentColor = Color.White,
@@ -99,11 +105,31 @@ fun ContactList(
 ) {
     val contactListUiState by contactListViewModel.uiState.collectAsState()
     var contacts = contactListUiState.contactList
+
     LazyColumn(
         modifier = modifier,
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
         state = listState
     ) {
+        item {
+            TextField(
+                value = contactListViewModel.searchQuery,
+                onValueChange = {
+                    contactListViewModel.searchContacts(it)
+                },
+                label = { Text(stringResource(id = R.string.search)) },
+                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        contactListViewModel.searchContacts(contactListViewModel.searchQuery)
+                    }
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         contacts?.let {
             items(contacts) {
                 ListItem(item = it, onContactItemClicked = onContactItemClicked)

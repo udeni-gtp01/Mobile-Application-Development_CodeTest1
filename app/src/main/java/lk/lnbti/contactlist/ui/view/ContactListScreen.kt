@@ -29,7 +29,7 @@ import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.view_model.ContactListViewModel
 
 @Composable
-fun ContactListScreen(onContactItemClicked: (String) -> Unit = {}, onNewContactClicked: () -> Unit = {},modifier: Modifier = Modifier) {
+fun ContactListScreen(onContactItemClicked: (String) -> Unit , onNewContactClicked: () -> Unit ,modifier: Modifier = Modifier) {
     Scaffold(
         floatingActionButton = {
             AddNewContactButton(onNewContactClicked)
@@ -47,7 +47,7 @@ fun ContactListScreen(onContactItemClicked: (String) -> Unit = {}, onNewContactC
 }
 
 @Composable
-fun AddNewContactButton(onNewContactClicked: () -> Unit = {}) {
+fun AddNewContactButton(onNewContactClicked: () -> Unit) {
     val context = LocalContext.current
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),

@@ -2,10 +2,9 @@ package lk.lnbti.contactlist.data
 
 import androidx.compose.runtime.Immutable
 
-@Immutable
 data class Contact(
-    val name: String,
-    val phone: String,
+    var name: String,
+    var phone: String,
 )
 
 object ContactData{
@@ -40,6 +39,14 @@ object ContactData{
     }
     fun addContact(contact:Contact) {
         contacts.add(contact)
+    }
+
+    fun updateContact(originalContactName:String,newContact:Contact) {
+        var contact=contacts.find { it.name==originalContactName }
+        contact?.let {
+            it.name=newContact.name
+            it.phone=newContact.phone
+        }
     }
 }
 

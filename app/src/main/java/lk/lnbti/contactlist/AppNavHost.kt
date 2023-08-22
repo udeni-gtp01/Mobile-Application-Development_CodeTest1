@@ -8,32 +8,42 @@ import androidx.navigation.compose.composable
 import lk.lnbti.contactlist.ui.view.AddContactScreen
 import lk.lnbti.contactlist.ui.view.ContactInfoScreen
 import lk.lnbti.contactlist.ui.view.ContactListScreen
+import lk.lnbti.contactlist.ui.view.UpdateContactScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = ContactList.route) {
         composable(route = ContactList.route) {
             ContactListScreen(
-                onContactItemClicked = {contactId->
-                    navController.navigateToContactInfo(contactId)
+                onContactItemClicked = { contactName ->
+                    navController.navigateToContactInfo(contactName)
                 },
-                onNewContactClicked = {navController.navigateSingleTopTo(AddContact.route)}
+                onNewContactClicked = { navController.navigateSingleTopTo(AddContact.route) }
             )
         }
 
         composable(
             route = ContactInfo.routeWithArgs,
             arguments = ContactInfo.arguments,
-           // deepLinks = ContactInfo.deepLinks
         ) { navBackStackEntry ->
             // Retrieve the passed argument
-            val contactId =
-                navBackStackEntry.arguments?.getString(ContactInfo.contactIdArg)
+            val contactName =
+                navBackStackEntry.arguments?.getString(ContactInfo.contactNameArg)
             // Pass contactId to ContactInfoScreen
-            ContactInfoScreen(contactId)
+            ContactInfoScreen(
+                contactName = contactName,
+                navController = navController
+            )
         }
         composable(route = AddContact.route) {
             AddContactScreen(navController)
+        }
+        composable(
+            route = UpdateContact.routeWithArgs,
+            arguments = UpdateContact.arguments
+        ) { navBackStackEntry ->
+            val contactName = navBackStackEntry.arguments?.getString(UpdateContact.contactNameArg)
+            UpdateContactScreen(navController = navController, contactName = contactName)
         }
     }
 }
@@ -51,8 +61,19 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // reselecting the same item
         launchSingleTop = true
         // Restore state when reselecting a previously selected item
-        restoreState = true }
+        restoreState = true
+    }
 
-private fun NavHostController.navigateToContactInfo(contactId: String) {
-    this.navigateSingleTopTo("${ContactInfo.route}/$contactId")
+private fun NavHostController.navigateToContactInfo(contactName: String) {
+    this.navigateSingleTopTo("${ContactInfo.route}/$contactName")
+}
+
+private fun NavHostController.navigateToEditContact(contactName: String) {
+    this.navigateSingleTopTo("${UpdateContact.route}/$contactName")
+}
+
+private fun NavigateToContactList(
+    navController: NavHostController
+) {
+    navController.popBackStack(ContactList.route, inclusive = false)
 }

@@ -2,6 +2,7 @@ package lk.lnbti.contactlist.service
 
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.data.ContactData
+import lk.lnbti.contactlist.ui_state.ContactListUiState
 
 class ContactServiceImpl : ContactService {
     /**
@@ -48,5 +49,17 @@ class ContactServiceImpl : ContactService {
      */
     override fun deleteContact(contactName: String) {
         ContactData.contacts.remove(ContactData.contacts.first { it.name == contactName })
+    }
+
+    /**
+     * Search contacts based on the given query and update the UI state with the filtered results.
+     *
+     * @param query The search query to filter contacts by.
+     */
+    override fun searchContacts(query: String): List<Contact>{
+        val filteredContacts = ContactData.contacts.filter {
+            it.name.contains(query, ignoreCase = true)
+        }
+        return filteredContacts
     }
 }

@@ -38,7 +38,7 @@ class EditContactViewModel(private val contactService: ContactService = ContactS
      */
     private fun validatePhone() {
         isValidPhone =
-            !(updatedContactPhone.isBlank() || updatedContactPhone.length != 10 || !updatedContactPhone.isDigitsOnly())
+            !(updatedContactPhone.isBlank() || updatedContactPhone.length != 10 || !updatedContactPhone.all { it.isDigit() })
     }
 
     /**

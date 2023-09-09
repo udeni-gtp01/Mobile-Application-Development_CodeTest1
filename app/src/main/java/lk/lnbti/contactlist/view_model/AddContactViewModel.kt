@@ -4,15 +4,16 @@ package lk.lnbti.contactlist.view_model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import lk.lnbti.contactlist.data.Contact
-import lk.lnbti.contactlist.data.ContactData
+import lk.lnbti.contactlist.service.ContactService
+import lk.lnbti.contactlist.service.ContactServiceImpl
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to adding a new contact.
  */
-class AddContactViewModel : ViewModel() {
+class AddContactViewModel(private val contactService: ContactService = ContactServiceImpl()) :
+    ViewModel() {
 
     // Mutable state properties to hold new contact's name and phone number
     var newContactName by mutableStateOf("")
@@ -34,7 +35,7 @@ class AddContactViewModel : ViewModel() {
      */
     private fun validatePhone() {
         isValidPhone =
-            !(newContactPhone.isBlank() || newContactPhone.length != 10 || !newContactPhone.isDigitsOnly())
+            !(newContactPhone.isBlank() || newContactPhone.length != 10 || !newContactPhone.all { it.isDigit() })
     }
 
     /**
@@ -63,7 +64,7 @@ class AddContactViewModel : ViewModel() {
      * @return The name of the saved contact.
      */
     fun saveNewContact(): String {
-        ContactData.addContact(Contact(newContactName, newContactPhone))
+        contactService.addContact(Contact(newContactName, newContactPhone))
         val newContactName = newContactName
         resetNewContact()
         return newContactName

@@ -38,5 +38,6 @@ class ContactInfoViewModel(private val contactService: ContactService = ContactS
                 contactName = it.name,
             )
         }
+        contact=null
     }
 }

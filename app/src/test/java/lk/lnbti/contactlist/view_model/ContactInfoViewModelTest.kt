@@ -39,4 +39,27 @@ class ContactInfoViewModelTest {
         viewModel.searchContact(contactName)
         assertEquals(expectedContact, viewModel.contact)
     }
+
+    @Test
+    fun `test empty or invalid contact name should return null`() {
+        val contactName: String? = null
+        val contact = Contact("Anil Perera", "1234567890")
+
+        Mockito.`when`(contactService.getContact(contactName = contactName))
+            .thenReturn(contact)
+
+        viewModel.searchContact(contactName)
+        assertEquals(null, viewModel.contact)
+    }
+
+    @Test
+    fun `deleteContact() should delete the currently displayed contact`() {
+        val contactName = "Anil Perera"
+        val contact = Contact(contactName, "1234567890")
+        viewModel.contact = contact
+
+        viewModel.deleteContact()
+
+        assertEquals(null, viewModel.contact)
+    }
 }

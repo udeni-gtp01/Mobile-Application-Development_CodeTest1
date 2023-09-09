@@ -6,12 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import lk.lnbti.contactlist.data.Contact
-import lk.lnbti.contactlist.data.ContactData
+import lk.lnbti.contactlist.service.ContactService
+import lk.lnbti.contactlist.service.ContactServiceImpl
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to editing a contact.
  */
-class EditContactViewModel : ViewModel() {
+class EditContactViewModel(private val contactService: ContactService = ContactServiceImpl()) :
+    ViewModel() {
 
     // Original contact name to track changes
     private var originalContactName: String = ""
@@ -36,7 +38,7 @@ class EditContactViewModel : ViewModel() {
      */
     private fun validatePhone() {
         isValidPhone =
-            !(updatedContactPhone.isBlank() || updatedContactPhone.length != 10 || !updatedContactPhone.isDigitsOnly())
+            !(updatedContactPhone.isBlank() || updatedContactPhone.length != 10 || !updatedContactPhone.all { it.isDigit() })
     }
 
     /**
@@ -66,7 +68,7 @@ class EditContactViewModel : ViewModel() {
      */
     fun searchContact(contactName: String?) {
         contactName?.let {
-            var contact = ContactData.getContact(it)
+            var contact = contactService.getContact(contactName)
             contact?.let {
                 originalContactName = contact.name
                 updatedContactName = contact.name
@@ -82,7 +84,7 @@ class EditContactViewModel : ViewModel() {
      */
     fun saveContact(): String {
         updatedContactName?.let {
-            ContactData.updateContact(
+            contactService.updateContact(
                 originalContactName = originalContactName,
                 updatedContact = Contact(updatedContactName, updatedContactPhone)
             )

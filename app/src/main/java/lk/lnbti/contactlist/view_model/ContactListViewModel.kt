@@ -8,12 +8,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import lk.lnbti.contactlist.data.ContactData
+import lk.lnbti.contactlist.service.ContactService
+import lk.lnbti.contactlist.service.ContactServiceImpl
 import lk.lnbti.contactlist.ui_state.ContactListUiState
 
 /**
  * ViewModel class responsible for managing the UI state of the Contact List screen.
  */
-class ContactListViewModel : ViewModel() {
+class ContactListViewModel(private val contactService: ContactService = ContactServiceImpl()) :
+    ViewModel() {
 
     // Internal mutable state flow to hold the UI state
     private val _uiState = MutableStateFlow(ContactListUiState())
@@ -46,9 +49,7 @@ class ContactListViewModel : ViewModel() {
      */
     fun searchContacts(query: String) {
         searchQuery = query
-        val filteredContacts = ContactData.contacts.filter {
-            it.name.contains(query, ignoreCase = true)
-        }
+        val filteredContacts = contactService.searchContacts(searchQuery)
         _uiState.value = ContactListUiState(contactList = filteredContacts)
     }
 }

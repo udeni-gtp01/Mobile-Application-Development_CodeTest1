@@ -63,12 +63,13 @@ fun EditContactScreen(
                         singleLine = true,
                         onValueChange = { editContactViewModel.updateContactName(it) },
                         label = {
-                            if (editContactViewModel.isValidContactName) {
-                                Text(stringResource(R.string.contact_name))
-                            } else {
+                            if (editContactViewModel.isContactNameError) {
                                 Text(stringResource(R.string.invalid_contact_name))
+                            } else {
+                                Text(stringResource(R.string.contact_name))
                             }
                         },
+                        isError = editContactViewModel.isContactNameError,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -81,12 +82,13 @@ fun EditContactScreen(
                         singleLine = true,
                         onValueChange = { editContactViewModel.updateContactPhone(it) },
                         label = {
-                            if (editContactViewModel.isValidPhone) {
-                                Text(stringResource(R.string.contact_phone))
-                            } else {
+                            if (editContactViewModel.isPhoneError) {
                                 Text(stringResource(R.string.invalid_contact_phone))
+                            } else {
+                                Text(stringResource(R.string.contact_phone))
                             }
                         },
+                        isError = editContactViewModel.isPhoneError,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -100,7 +102,7 @@ fun EditContactScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    if (editContactViewModel.isValidContactName && editContactViewModel.isValidPhone) {
+                    if (editContactViewModel.isValidationSuccessful()) {
                         onSaveButtonClicked(editContactViewModel.saveContact())
                     }
                 }

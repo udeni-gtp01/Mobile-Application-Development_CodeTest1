@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.service.ContactService
 import lk.lnbti.contactlist.service.ContactServiceImpl
-import lk.lnbti.contactlist.ui_state.ContactListUiState
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to adding a new contact.
@@ -26,21 +25,21 @@ class AddContactViewModel(
     var isContactNameError by mutableStateOf(false)
     var isPhoneError by mutableStateOf(false)
 
-    fun isValidationSuccessful():Boolean{
+    fun isValidationSuccessful(): Boolean {
         validateContactName()
         validatePhone()
         return (!isContactNameError && !isPhoneError)
     }
 
     /**
-     * Validates the entered contact name and updates the [isValidContactName] property accordingly.
+     * Validates the entered contact name and updates the [isContactNameError] property accordingly.
      */
     private fun validateContactName() {
         isContactNameError = newContactName.isBlank()
     }
 
     /**
-     * Validates the entered contact phone number and updates the [isValidPhone] property accordingly.
+     * Validates the entered contact phone number and updates the [isPhoneError] property accordingly.
      */
     private fun validatePhone() {
         isPhoneError =

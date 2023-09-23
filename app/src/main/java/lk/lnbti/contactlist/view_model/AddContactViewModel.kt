@@ -8,11 +8,14 @@ import androidx.lifecycle.ViewModel
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.service.ContactService
 import lk.lnbti.contactlist.service.ContactServiceImpl
+import lk.lnbti.contactlist.ui_state.ContactListUiState
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to adding a new contact.
  */
-class AddContactViewModel(private val contactService: ContactService = ContactServiceImpl()) :
+class AddContactViewModel(
+    private val contactService: ContactService = ContactServiceImpl.getInstance(),
+) :
     ViewModel() {
 
     // Mutable state properties to hold new contact's name and phone number

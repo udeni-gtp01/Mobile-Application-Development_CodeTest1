@@ -4,7 +4,17 @@ import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.data.ContactData
 import lk.lnbti.contactlist.ui_state.ContactListUiState
 
-class ContactServiceImpl : ContactService {
+
+object ContactServiceImpl : ContactService {
+
+    private var instance: ContactServiceImpl? = null
+    fun getInstance(): ContactServiceImpl {
+        if (instance == null) {
+            instance = ContactServiceImpl
+        }
+        return instance!!
+    }
+
     /**
      * Retrieves a contact by its name.
      *
@@ -26,6 +36,7 @@ class ContactServiceImpl : ContactService {
      */
     override fun addContact(contact: Contact) {
         ContactData.contacts.add(contact)
+        ContactListUiState.loadLectureList(ContactData.contacts)
     }
 
     /**
@@ -40,6 +51,7 @@ class ContactServiceImpl : ContactService {
             it.name = updatedContact.name
             it.phone = updatedContact.phone
         }
+        ContactListUiState.loadLectureList(ContactData.contacts)
     }
 
     /**
@@ -49,6 +61,7 @@ class ContactServiceImpl : ContactService {
      */
     override fun deleteContact(contactName: String) {
         ContactData.contacts.remove(ContactData.contacts.first { it.name == contactName })
+        ContactListUiState.loadLectureList(ContactData.contacts)
     }
 
     /**
@@ -56,10 +69,18 @@ class ContactServiceImpl : ContactService {
      *
      * @param query The search query to filter contacts by.
      */
-    override fun searchContacts(query: String): List<Contact>{
+    override fun searchContacts(query: String) {
         val filteredContacts = ContactData.contacts.filter {
             it.name.contains(query, ignoreCase = true)
         }
-        return filteredContacts
+        ContactListUiState.loadLectureList(filteredContacts)
+    }
+
+    /**
+     * Retrieve all contacts and update the UI state.
+     *
+     */
+    override fun loadAllContacts() {
+        ContactListUiState.loadLectureList(ContactData.contacts)
     }
 }

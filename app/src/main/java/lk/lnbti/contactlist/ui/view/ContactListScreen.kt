@@ -31,6 +31,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -104,8 +105,7 @@ fun ContactList(
     listState: LazyListState = rememberLazyListState(),
     contactListViewModel: ContactListViewModel = viewModel()
 ) {
-    val contactListUiState by contactListViewModel.uiState.collectAsState()
-    var contacts = contactListUiState.contactList
+    val contacts :List<Contact> by contactListViewModel.contactList.observeAsState(emptyList())
 
     LazyColumn(
         modifier = modifier,

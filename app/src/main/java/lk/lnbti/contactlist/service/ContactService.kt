@@ -42,5 +42,11 @@ interface ContactService {
      * @param query The search query to filter contacts by.
      * @return A list of contacts that match the query.
      */
-    fun searchContacts(query: String): List<Contact>
+    fun searchContacts(query: String)
+
+    /**
+     * Searches for all contacts.
+     *
+     */
+    fun loadAllContacts()
 }

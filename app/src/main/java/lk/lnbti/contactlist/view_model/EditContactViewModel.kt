@@ -12,7 +12,7 @@ import lk.lnbti.contactlist.service.ContactServiceImpl
 /**
  * ViewModel class responsible for managing the UI state and interactions related to editing a contact.
  */
-class EditContactViewModel(private val contactService: ContactService = ContactServiceImpl()) :
+class EditContactViewModel(private val contactService: ContactService = ContactServiceImpl.getInstance()) :
     ViewModel() {
 
     // Original contact name to track changes

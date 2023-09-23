@@ -12,7 +12,7 @@ import lk.lnbti.contactlist.service.ContactServiceImpl
  * ViewModel class responsible for managing the UI state and
  * interactions related to a specific contact's information.
  */
-class ContactInfoViewModel(private val contactService: ContactService = ContactServiceImpl()) :
+class ContactInfoViewModel(private val contactService: ContactService = ContactServiceImpl.getInstance()) :
     ViewModel() {
 
     // Mutable state that holds the current contact information being displayed

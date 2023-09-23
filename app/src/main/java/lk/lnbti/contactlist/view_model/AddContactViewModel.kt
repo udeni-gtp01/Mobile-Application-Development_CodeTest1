@@ -23,22 +23,28 @@ class AddContactViewModel(
     var newContactPhone by mutableStateOf("")
 
     // Mutable state properties to track the validity of the contact name and phone number
-    var isValidContactName by mutableStateOf(false)
-    var isValidPhone by mutableStateOf(false)
+    var isContactNameError by mutableStateOf(false)
+    var isPhoneError by mutableStateOf(false)
+
+    fun isValidationSuccessful():Boolean{
+        validateContactName()
+        validatePhone()
+        return (!isContactNameError && !isPhoneError)
+    }
 
     /**
      * Validates the entered contact name and updates the [isValidContactName] property accordingly.
      */
     private fun validateContactName() {
-        isValidContactName = !newContactName.isBlank()
+        isContactNameError = newContactName.isBlank()
     }
 
     /**
      * Validates the entered contact phone number and updates the [isValidPhone] property accordingly.
      */
     private fun validatePhone() {
-        isValidPhone =
-            !(newContactPhone.isBlank() || newContactPhone.length != 10 || !newContactPhone.all { it.isDigit() })
+        isPhoneError =
+            (newContactPhone.isBlank() || newContactPhone.length != 10 || !newContactPhone.all { it.isDigit() })
     }
 
     /**
@@ -48,7 +54,6 @@ class AddContactViewModel(
      */
     fun updateContactName(contactName: String) {
         newContactName = contactName
-        validateContactName()
     }
 
     /**
@@ -58,7 +63,6 @@ class AddContactViewModel(
      */
     fun updateContactPhone(contactPhone: String) {
         newContactPhone = contactPhone
-        validatePhone()
     }
 
     /**

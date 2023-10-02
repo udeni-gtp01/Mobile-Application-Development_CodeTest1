@@ -31,7 +31,7 @@ class ContactListViewModel(
     /**
      * Loads the initial contact list and updates the UI state.
      */
-    private fun loadContactList() {
+    fun loadContactList() {
         contactService.loadAllContacts()
     }
 

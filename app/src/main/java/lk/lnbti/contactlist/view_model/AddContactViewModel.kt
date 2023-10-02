@@ -34,14 +34,14 @@ class AddContactViewModel(
     /**
      * Validates the entered contact name and updates the [isContactNameError] property accordingly.
      */
-    private fun validateContactName() {
+    fun validateContactName() {
         isContactNameError = newContactName.isBlank()
     }
 
     /**
      * Validates the entered contact phone number and updates the [isPhoneError] property accordingly.
      */
-    private fun validatePhone() {
+    fun validatePhone() {
         isPhoneError =
             (newContactPhone.isBlank() || newContactPhone.length != 10 || !newContactPhone.all { it.isDigit() })
     }

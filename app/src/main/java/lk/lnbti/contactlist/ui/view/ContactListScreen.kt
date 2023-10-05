@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.data.Contact
+import lk.lnbti.contactlist.view_model.AppViewModelProvider
 import lk.lnbti.contactlist.view_model.ContactListViewModel
 
 /**
@@ -103,7 +104,7 @@ fun ContactList(
     modifier: Modifier = Modifier,
     onContactItemClicked: (String) -> Unit,
     listState: LazyListState = rememberLazyListState(),
-    contactListViewModel: ContactListViewModel = viewModel()
+    contactListViewModel: ContactListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val contacts :List<Contact> by contactListViewModel.contactList.observeAsState(emptyList())
 

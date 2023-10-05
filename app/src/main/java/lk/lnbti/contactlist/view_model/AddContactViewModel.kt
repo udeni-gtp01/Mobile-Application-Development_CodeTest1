@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import lk.lnbti.contactlist.ContactListApplication
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.service.ContactService
 import lk.lnbti.contactlist.service.ContactServiceImpl
@@ -13,7 +14,7 @@ import lk.lnbti.contactlist.service.ContactServiceImpl
  * ViewModel class responsible for managing the UI state and interactions related to adding a new contact.
  */
 class AddContactViewModel(
-    private val contactService: ContactService = ContactServiceImpl.getInstance(),
+    private val contactService: ContactService = ContactListApplication().container.cantactService,
 ) :
     ViewModel() {
 

@@ -11,7 +11,7 @@ import lk.lnbti.contactlist.data.Contact
 @Dao
 interface ContactDao {
     @Query("select * from contact_table order by name asc")
-    fun getAllContacts(): LiveData<List<Contact>>
+    suspend fun getAllContacts(): List<Contact>
     @Insert
     fun insert(contact: Contact)
 
@@ -19,11 +19,11 @@ interface ContactDao {
     fun update(contact: Contact)
 
     @Delete
-    fun delete(contact: Contact)
+    suspend fun delete(contact: Contact)
 
     @Query("SELECT * FROM contact_table WHERE name LIKE :name")
     fun filterByName(name: String): List<Contact>
 
     @Query("SELECT * FROM contact_table WHERE name = :name")
-    fun findByName(name: String): Contact
+    suspend fun findByName(name: String?): Contact?
 }

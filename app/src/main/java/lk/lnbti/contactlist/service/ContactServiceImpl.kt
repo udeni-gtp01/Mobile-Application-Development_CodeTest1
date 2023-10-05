@@ -1,32 +1,30 @@
 package lk.lnbti.contactlist.service
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import lk.lnbti.contactlist.dao.ContactDao
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.data.ContactData
 import lk.lnbti.contactlist.ui_state.ContactListUiState
 
 
-object ContactServiceImpl : ContactService {
-
-    private var instance: ContactServiceImpl? = null
-    fun getInstance(): ContactServiceImpl {
-        if (instance == null) {
-            instance = ContactServiceImpl
-        }
-        return instance!!
-    }
-
+class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
     /**
      * Retrieves a contact by its name.
      *
      * @param contactName The name of the contact to retrieve.
      * @return The [Contact] instance with the matching name, or null if not found.
      */
-    override fun getContact(contactName: String?): Contact? {
-        return try {
-            ContactData.contacts.first { it.name == contactName }
-        } catch (e: Exception) {
-            null
+    override suspend fun getContact(contactName: String?): Contact? {
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
+                contactDao.findByName(contactName)
+               // ContactData.contacts.first { it.name == contactName }
+            } catch (e: Exception) {
+                null
+            }
         }
+
     }
 
     /**
@@ -36,7 +34,7 @@ object ContactServiceImpl : ContactService {
      */
     override fun addContact(contact: Contact) {
         ContactData.contacts.add(contact)
-        ContactListUiState.loadLectureList(ContactData.contacts)
+        ContactListUiState.loadContactList(ContactData.contacts)
     }
 
     /**
@@ -51,7 +49,7 @@ object ContactServiceImpl : ContactService {
             it.name = updatedContact.name
             it.phone = updatedContact.phone
         }
-        ContactListUiState.loadLectureList(ContactData.contacts)
+        ContactListUiState.loadContactList(ContactData.contacts)
     }
 
     /**
@@ -59,9 +57,12 @@ object ContactServiceImpl : ContactService {
      *
      * @param contactName The name of the contact to be deleted.
      */
-    override fun deleteContact(contactName: String) {
-        ContactData.contacts.remove(ContactData.contacts.first { it.name == contactName })
-        ContactListUiState.loadLectureList(ContactData.contacts)
+    override suspend fun deleteContact(contactName: String) {
+        withContext(Dispatchers.IO) {
+            val contact : Contact?=contactDao.findByName(contactName)
+            contact?.let { contactDao.delete(it) }
+        }
+        ContactListUiState.loadContactList(loadAllContacts())
     }
 
     /**
@@ -73,14 +74,16 @@ object ContactServiceImpl : ContactService {
         val filteredContacts = ContactData.contacts.filter {
             it.name.contains(query, ignoreCase = true)
         }
-        ContactListUiState.loadLectureList(filteredContacts)
+        ContactListUiState.loadContactList(filteredContacts)
     }
 
     /**
      * Retrieve all contacts and update the UI state.
      *
      */
-    override fun loadAllContacts() {
-        ContactListUiState.loadLectureList(ContactData.contacts)
+    override suspend fun loadAllContacts():List<Contact> {
+        return withContext(Dispatchers.IO) {
+            return@withContext contactDao.getAllContacts()
+        }
     }
 }

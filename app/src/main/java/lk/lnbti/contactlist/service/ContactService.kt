@@ -12,7 +12,7 @@ interface ContactService {
      * @param contactName The name of the contact to retrieve.
      * @return The contact with the specified name, or null if not found.
      */
-    fun getContact(contactName: String?): Contact?
+    suspend fun getContact(contactName: String?): Contact?
 
     /**
      * Adds a new contact to the contact list.
@@ -34,7 +34,7 @@ interface ContactService {
      *
      * @param contactName The name of the contact to delete.
      */
-    fun deleteContact(contactName: String)
+    suspend fun deleteContact(contactName: String)
 
     /**
      * Searches for contacts that match the given query.
@@ -48,5 +48,5 @@ interface ContactService {
      * Searches for all contacts.
      *
      */
-    fun loadAllContacts()
+    suspend fun loadAllContacts():List<Contact>
 }

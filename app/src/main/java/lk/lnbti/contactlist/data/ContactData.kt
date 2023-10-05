@@ -12,10 +12,10 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "contact_table")
 data class Contact(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
     var name: String,
     var phone: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 )
 
 /**

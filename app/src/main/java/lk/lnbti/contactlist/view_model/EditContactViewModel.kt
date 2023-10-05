@@ -4,14 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import lk.lnbti.contactlist.ContactListApplication
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.service.ContactService
-import lk.lnbti.contactlist.service.ContactServiceImpl
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to editing a contact.
  */
-class EditContactViewModel(private val contactService: ContactService = ContactServiceImpl.getInstance()) :
+class EditContactViewModel(private val contactService: ContactService = ContactListApplication().container.cantactService) :
     ViewModel() {
 
     // Original contact name to track changes
@@ -70,12 +72,14 @@ class EditContactViewModel(private val contactService: ContactService = ContactS
      * @param contactName The contact name to search for and edit.
      */
     fun searchContact(contactName: String?) {
-        contactName?.let {
-            var contact = contactService.getContact(contactName)
-            contact?.let {
-                originalContactName = contact.name
-                updatedContactName = contact.name
-                updatedContactPhone = contact.phone
+        viewModelScope.launch {
+            contactName?.let {
+                var contact = contactService.getContact(contactName)
+                contact?.let {
+                    originalContactName = contact.name
+                    updatedContactName = contact.name
+                    updatedContactPhone = contact.phone
+                }
             }
         }
     }

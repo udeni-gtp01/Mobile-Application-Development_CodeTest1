@@ -32,7 +32,7 @@ import lk.lnbti.contactlist.view_model.AddContactViewModel
 @Composable
 fun AddContactScreen(
     addContactViewModel: AddContactViewModel = viewModel(),
-    onSaveButtonClicked: (String) -> Unit,
+    onSaveButtonClicked: (Int) -> Unit,
     onCancelButtonClicked: () -> Unit
 ) {
     Column(

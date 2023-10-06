@@ -6,15 +6,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import lk.lnbti.contactlist.ContactListApplication
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.service.ContactService
+import lk.lnbti.contactlist.ui_state.ContactListUiState
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to editing a contact.
  */
-class EditContactViewModel(private val contactService: ContactService = ContactListApplication().container.cantactService) :
+class EditContactViewModel(private val contactService: ContactService) :
     ViewModel() {
+    //unique id for existing contact
+    var id: Int = 0
 
     // Original contact name to track changes
     private var originalContactName: String = ""
@@ -67,14 +69,14 @@ class EditContactViewModel(private val contactService: ContactService = ContactL
     }
 
     /**
-     * Searches for the contact to edit using the provided contact name and updates the ViewModel's state accordingly.
+     * Searches for the contact to edit using the provided contact id and updates the ViewModel's state accordingly.
      *
-     * @param contactName The contact name to search for and edit.
+     * @param contactId The contact id to search for and edit.
      */
-    fun searchContact(contactName: String?) {
+    fun searchContact(contactId: Int?) {
         viewModelScope.launch {
-            contactName?.let {
-                var contact = contactService.getContact(contactName)
+            contactId?.let {
+                var contact = contactService.getContact(contactId)
                 contact?.let {
                     originalContactName = contact.name
                     updatedContactName = contact.name
@@ -89,14 +91,17 @@ class EditContactViewModel(private val contactService: ContactService = ContactL
      *
      * @return The name of the saved contact.
      */
-    fun saveContact(): String {
-        updatedContactName?.let {
-            contactService.updateContact(
-                originalContactName = originalContactName,
-                updatedContact = Contact(updatedContactName, updatedContactPhone)
-            )
+    fun saveContact(): Int {
+        viewModelScope.launch {
+            updatedContactName?.let {
+                contactService.updateContact(
+                    originalContactName = originalContactName,
+                    updatedContact = Contact(updatedContactName, updatedContactPhone)
+                )
+                ContactListUiState.loadContactList(contactService.loadAllContacts())
+            }
+            originalContactName = updatedContactName
         }
-        originalContactName = updatedContactName
         return resetContact()
     }
 
@@ -105,11 +110,11 @@ class EditContactViewModel(private val contactService: ContactService = ContactL
      *
      * @return The original contact name before editing.
      */
-    fun resetContact(): String {
+    fun resetContact(): Int {
         var tempContactName = originalContactName
         updatedContactName = ""
         updatedContactPhone = ""
         originalContactName = ""
-        return tempContactName
+        return id
     }
 }

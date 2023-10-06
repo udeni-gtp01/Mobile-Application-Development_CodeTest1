@@ -15,16 +15,14 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      * @param contactName The name of the contact to retrieve.
      * @return The [Contact] instance with the matching name, or null if not found.
      */
-    override suspend fun getContact(contactName: String?): Contact? {
+    override suspend fun getContact(contactId: Int?): Contact? {
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                contactDao.findByName(contactName)
-               // ContactData.contacts.first { it.name == contactName }
+                contactDao.findById(contactId)
             } catch (e: Exception) {
                 null
             }
         }
-
     }
 
     /**
@@ -32,9 +30,10 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      *
      * @param contact The [Contact] instance to be added.
      */
-    override fun addContact(contact: Contact) {
+    override fun addContact(contact: Contact):Long {
         ContactData.contacts.add(contact)
         ContactListUiState.loadContactList(ContactData.contacts)
+        return 0
     }
 
     /**
@@ -43,13 +42,15 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      * @param originalContactName The name of the contact to be updated.
      * @param updatedContact The updated [Contact] information.
      */
-    override fun updateContact(originalContactName: String, updatedContact: Contact) {
-        var contact = ContactData.contacts.find { it.name == originalContactName }
-        contact?.let {
-            it.name = updatedContact.name
-            it.phone = updatedContact.phone
+    override suspend fun updateContact(originalContactName: String, updatedContact: Contact) {
+        withContext(Dispatchers.IO) {
+            val contact = contactDao.findByName(originalContactName)
+            contact?.let {
+                it.name = updatedContact.name
+                it.phone = updatedContact.phone
+                contactDao.update(it)
+            }
         }
-        ContactListUiState.loadContactList(ContactData.contacts)
     }
 
     /**
@@ -59,10 +60,11 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      */
     override suspend fun deleteContact(contactName: String) {
         withContext(Dispatchers.IO) {
-            val contact : Contact?=contactDao.findByName(contactName)
-            contact?.let { contactDao.delete(it) }
+            val contact = contactDao.findByName(contactName)
+            contact?.let {
+                contactDao.delete(it)
+            }
         }
-        ContactListUiState.loadContactList(loadAllContacts())
     }
 
     /**
@@ -81,7 +83,7 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      * Retrieve all contacts and update the UI state.
      *
      */
-    override suspend fun loadAllContacts():List<Contact> {
+    override suspend fun loadAllContacts(): List<Contact> {
         return withContext(Dispatchers.IO) {
             return@withContext contactDao.getAllContacts()
         }

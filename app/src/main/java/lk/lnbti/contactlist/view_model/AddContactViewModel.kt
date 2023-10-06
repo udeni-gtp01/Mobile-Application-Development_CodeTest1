@@ -5,16 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import lk.lnbti.contactlist.ContactListApplication
 import lk.lnbti.contactlist.data.Contact
 import lk.lnbti.contactlist.service.ContactService
-import lk.lnbti.contactlist.service.ContactServiceImpl
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to adding a new contact.
  */
 class AddContactViewModel(
-    private val contactService: ContactService = ContactListApplication().container.cantactService,
+    private val contactService: ContactService
 ) :
     ViewModel() {
 
@@ -70,11 +68,10 @@ class AddContactViewModel(
      *
      * @return The name of the saved contact.
      */
-    fun saveNewContact(): String {
-        contactService.addContact(Contact(newContactName, newContactPhone))
-        val newContactName = newContactName
+    fun saveNewContact(): Int {
+        val contactId = contactService.addContact(Contact(newContactName, newContactPhone))
         resetNewContact()
-        return newContactName
+        return contactId.toInt()
     }
 
     /**

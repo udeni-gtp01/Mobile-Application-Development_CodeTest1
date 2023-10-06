@@ -32,13 +32,13 @@ import lk.lnbti.contactlist.view_model.ContactInfoViewModel
  */
 @Composable
 fun ContactInfoScreen(
-    contactName: String?,
+    contactId: Int?,
     contactInfoViewModel: ContactInfoViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onCancelButtonClicked: () -> Unit,
     onDeleteButtonClicked: () -> Unit,
     onEditButtonClicked: (String) -> Unit,
 ) {
-    contactInfoViewModel.searchContact(contactName)
+    contactInfoViewModel.searchContact(contactId)
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

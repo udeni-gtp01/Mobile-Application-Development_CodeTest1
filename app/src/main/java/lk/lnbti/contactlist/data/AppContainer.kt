@@ -6,11 +6,11 @@ import lk.lnbti.contactlist.service.ContactService
 import lk.lnbti.contactlist.service.ContactServiceImpl
 
 interface AppContainer {
-    val cantactService:ContactService
+    val contactService:ContactService
 }
 
 class AppDataContainer(private val context: Context):AppContainer{
-    override val cantactService: ContactService by lazy {
+    override val contactService: ContactService by lazy {
         ContactServiceImpl(ContactDatabase.getInstance(context).contactDao())
     }
 

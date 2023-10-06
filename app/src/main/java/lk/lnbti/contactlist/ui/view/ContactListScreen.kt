@@ -55,7 +55,7 @@ import lk.lnbti.contactlist.view_model.ContactListViewModel
  */
 @Composable
 fun ContactListScreen(
-    onContactItemClicked: (String) -> Unit,
+    onContactItemClicked: (Int) -> Unit,
     onNewContactClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -102,7 +102,7 @@ fun AddNewContactButton(onNewContactClicked: () -> Unit) {
 @Composable
 fun ContactList(
     modifier: Modifier = Modifier,
-    onContactItemClicked: (String) -> Unit,
+    onContactItemClicked: (Int) -> Unit,
     listState: LazyListState = rememberLazyListState(),
     contactListViewModel: ContactListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -149,7 +149,7 @@ fun ContactList(
 @Composable
 fun ListItem(
     item: Contact,
-    onContactItemClicked: (String) -> Unit
+    onContactItemClicked: (Int) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -159,7 +159,7 @@ fun ListItem(
             .background(color = Color.LightGray)
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
-            .clickable { onContactItemClicked(item.name) }
+            .clickable { onContactItemClicked(item.id) }
     ) {
         Column {
             Text(

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.R
+import lk.lnbti.contactlist.view_model.AppViewModelProvider
 import lk.lnbti.contactlist.view_model.EditContactViewModel
 
 /**
@@ -32,12 +33,12 @@ import lk.lnbti.contactlist.view_model.EditContactViewModel
  */
 @Composable
 fun EditContactScreen(
-    editContactViewModel: EditContactViewModel = viewModel(),
-    contactName: String?,
-    onCancelButtonClicked: (String) -> Unit,
-    onSaveButtonClicked: (String) -> Unit
+    editContactViewModel: EditContactViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    contactId: Int?,
+    onCancelButtonClicked: (Int) -> Unit,
+    onSaveButtonClicked: (Int) -> Unit
 ) {
-    editContactViewModel.searchContact(contactName)
+    editContactViewModel.searchContact(contactId)
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

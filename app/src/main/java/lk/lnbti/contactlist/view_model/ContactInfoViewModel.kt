@@ -21,14 +21,14 @@ class ContactInfoViewModel(private val contactService: ContactService) :
     var contact by mutableStateOf<Contact?>(null)
 
     /**
-     * Searches for the contact with the given name and updates the [contact] property if found.
+     * Searches for the contact with the given unique id and updates the [contact] property if found.
      *
-     * @param contactName The name of the contact to search for.
+     * @param contactId The unique id of the contact to search for.
      */
-    fun searchContact(contactName: String?) {
+    fun searchContact(contactId: Int?) {
         viewModelScope.launch {
-            contactName?.let {
-                contact = contactService.getContact(contactName)
+            contactId?.let {
+                contact = contactService.getContact(contactId.toInt())
             }
         }
 
@@ -43,6 +43,7 @@ class ContactInfoViewModel(private val contactService: ContactService) :
                 contactService.deleteContact(
                     contactName = it.name,
                 )
+                ContactListUiState.loadContactList(contactService.loadAllContacts())
             }
             contact = null
         }

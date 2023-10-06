@@ -16,7 +16,7 @@ interface ContactDao {
     fun insert(contact: Contact)
 
     @Update
-    fun update(contact: Contact)
+    suspend fun update(contact: Contact)
 
     @Delete
     suspend fun delete(contact: Contact)
@@ -26,4 +26,7 @@ interface ContactDao {
 
     @Query("SELECT * FROM contact_table WHERE name = :name")
     suspend fun findByName(name: String?): Contact?
+
+    @Query("SELECT * FROM contact_table WHERE id = :id")
+    suspend fun findById(id: Int?): Contact?
 }

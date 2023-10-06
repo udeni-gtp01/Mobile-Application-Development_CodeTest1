@@ -30,18 +30,22 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         // Initializer for ContactListViewModel
         initializer {
-            ContactListViewModel(contactListApplication().container.cantactService)
+            ContactListViewModel(contactListApplication().container.contactService)
         }
-        // Initializer for ContactListViewModel
+        // Initializer for ContactInfoViewModel
         initializer {
-            ContactInfoViewModel(contactListApplication().container.cantactService)
+            ContactInfoViewModel(contactListApplication().container.contactService)
+        }
+        // Initializer for EditContactViewModel
+        initializer {
+            EditContactViewModel(contactListApplication().container.contactService)
         }
     }
 }
 
 /**
  * Extension function to queries for [Application] object and returns an instance of
- * [InventoryApplication].
+ * [ContactListApplication].
  */
 fun CreationExtras.contactListApplication(): ContactListApplication =
     (this[AndroidViewModelFactory.APPLICATION_KEY] as ContactListApplication)

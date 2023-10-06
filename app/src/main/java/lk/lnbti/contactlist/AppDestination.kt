@@ -25,10 +25,10 @@ object ContactList : AppDestination {
  */
 object ContactInfo : AppDestination {
     override val route = "contact_info"
-    const val contactNameArg = "contact_name"
-    val routeWithArgs = "$route/{$contactNameArg}"
+    const val contactIdArg = "contact_id"
+    val routeWithArgs = "$route/{$contactIdArg}"
     val arguments = listOf(
-        navArgument(contactNameArg) { type = NavType.StringType }
+        navArgument(contactIdArg) { type = NavType.IntType }
     )
 }
 
@@ -44,9 +44,9 @@ object AddContact : AppDestination {
  */
 object EditContact : AppDestination {
     override val route = "edit_contact"
-    const val contactNameArg = "contact_name"
-    val routeWithArgs = "$route/{$contactNameArg}"
+    const val contactIdArg = "contact_id"
+    val routeWithArgs = "$route/{$contactIdArg}"
     val arguments = listOf(
-        navArgument(contactNameArg) { type = NavType.StringType }
+        navArgument(contactIdArg) { type = NavType.IntType }
     )
 }

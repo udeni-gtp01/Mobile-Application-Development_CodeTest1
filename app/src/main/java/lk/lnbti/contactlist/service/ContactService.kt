@@ -12,14 +12,14 @@ interface ContactService {
      * @param contactName The name of the contact to retrieve.
      * @return The contact with the specified name, or null if not found.
      */
-    fun getContact(contactName: String?): Contact?
+    suspend fun getContact(contactId: Int?): Contact?
 
     /**
      * Adds a new contact to the contact list.
      *
      * @param contact The contact to be added.
      */
-    fun addContact(contact: Contact)
+    suspend fun addContact(contact: Contact): Long
 
     /**
      * Updates an existing contact's information.
@@ -27,14 +27,14 @@ interface ContactService {
      * @param originalContactName The name of the contact to update.
      * @param updatedContact The updated contact information.
      */
-    fun updateContact(originalContactName: String, updatedContact: Contact)
+    suspend fun updateContact(updatedContact: Contact)
 
     /**
      * Deletes a contact from the contact list by name.
      *
      * @param contactName The name of the contact to delete.
      */
-    fun deleteContact(contactName: String)
+    suspend fun deleteContact(contactId: Int)
 
     /**
      * Searches for contacts that match the given query.
@@ -48,5 +48,5 @@ interface ContactService {
      * Searches for all contacts.
      *
      */
-    fun loadAllContacts()
+    suspend fun loadAllContacts(): List<Contact>
 }

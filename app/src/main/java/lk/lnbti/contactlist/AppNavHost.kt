@@ -21,8 +21,8 @@ fun AppNavHost(navController: NavHostController) {
         // Contact List Screen
         composable(route = ContactList.route) {
             ContactListScreen(
-                onContactItemClicked = { contactName ->
-                    navController.navigateToContactInfo(contactName)
+                onContactItemClicked = { contactId ->
+                    navController.navigateToContactInfo(contactId)
                 },
                 onNewContactClicked = { navController.navigateSingleTopTo(AddContact.route) }
             )
@@ -33,15 +33,15 @@ fun AppNavHost(navController: NavHostController) {
             arguments = ContactInfo.arguments,
         ) { navBackStackEntry ->
             // Retrieve the passed argument
-            val contactName =
-                navBackStackEntry.arguments?.getString(ContactInfo.contactNameArg)
-            // Pass contact name to ContactInfoScreen
+            val contactId =
+                navBackStackEntry.arguments?.getInt(ContactInfo.contactIdArg)
+            // Pass contact id to ContactInfoScreen
             ContactInfoScreen(
-                contactName = contactName,
+                contactId = contactId,
                 onCancelButtonClicked = { navController.navigateSingleTopTo(ContactList.route) },
                 onDeleteButtonClicked = { navController.navigateSingleTopTo(ContactList.route) },
-                onEditButtonClicked = { contactName ->
-                    navController.navigateToEditContact(contactName)
+                onEditButtonClicked = { contactId ->
+                    navController.navigateToEditContact(contactId)
                 },
             )
         }
@@ -51,24 +51,24 @@ fun AppNavHost(navController: NavHostController) {
             arguments = EditContact.arguments,
         ) { navBackStackEntry ->
             // Retrieve the passed argument
-            val contactName =
-                navBackStackEntry.arguments?.getString(EditContact.contactNameArg)
-            // Pass contact name to ContactInfoScreen
+            val contactId =
+                navBackStackEntry.arguments?.getInt(EditContact.contactIdArg)
+            // Pass contact id to ContactInfoScreen
             EditContactScreen(
-                contactName = contactName,
-                onCancelButtonClicked = { contactName ->
-                    navController.navigateToContactInfo(contactName)
+                contactId = contactId,
+                onCancelButtonClicked = { contactId ->
+                    navController.navigateToContactInfo(contactId = contactId)
                 },
-                onSaveButtonClicked = { contactName ->
-                    navController.navigateToContactInfo(contactName)
+                onSaveButtonClicked = { contactId ->
+                    navController.navigateToContactInfo(contactId)
                 },
             )
         }
         // Add Contact Screen
         composable(route = AddContact.route) {
             AddContactScreen(
-                onSaveButtonClicked = { contactName ->
-                    navController.navigateToContactInfo(contactName)
+                onSaveButtonClicked = { contactId ->
+                    navController.navigateToContactInfo(contactId)
                 },
                 onCancelButtonClicked = { navController.navigateSingleTopTo(ContactList.route) }
             )
@@ -77,13 +77,13 @@ fun AppNavHost(navController: NavHostController) {
 }
 
 // Extension function to navigate to Contact Info screen
-private fun NavHostController.navigateToContactInfo(contactName: String) {
-    this.navigateSingleTopTo("${ContactInfo.route}/$contactName")
+private fun NavHostController.navigateToContactInfo(contactId: Int) {
+    this.navigateSingleTopTo("${ContactInfo.route}/$contactId")
 }
 
 // Extension function to navigate to Edit Contact screen
-private fun NavHostController.navigateToEditContact(contactName: String) {
-    this.navigateSingleTopTo("${EditContact.route}/$contactName")
+private fun NavHostController.navigateToEditContact(contactId: Int) {
+    this.navigateSingleTopTo("${EditContact.route}/$contactId")
 }
 
 // Extension function to navigate with single top behavior

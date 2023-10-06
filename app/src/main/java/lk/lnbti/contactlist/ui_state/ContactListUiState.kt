@@ -13,7 +13,7 @@ object ContactListUiState{
     private val _contactList: MutableLiveData<List<Contact>> = MutableLiveData(emptyList())
     val contactList: LiveData<List<Contact>> = _contactList
 
-    fun loadLectureList(lectureList: List<Contact>) {
-        _contactList.value = lectureList
+    fun loadContactList(contactList: List<Contact>) {
+        _contactList.value = contactList
     }
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.contactlist.R
 import lk.lnbti.contactlist.view_model.AddContactViewModel
+import lk.lnbti.contactlist.view_model.AppViewModelProvider
 
 /**
  * Composable function for the Add Contact screen.
@@ -31,8 +32,8 @@ import lk.lnbti.contactlist.view_model.AddContactViewModel
  */
 @Composable
 fun AddContactScreen(
-    addContactViewModel: AddContactViewModel = viewModel(),
-    onSaveButtonClicked: (String) -> Unit,
+    addContactViewModel: AddContactViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    onSaveButtonClicked: (Int) -> Unit,
     onCancelButtonClicked: () -> Unit
 ) {
     Column(

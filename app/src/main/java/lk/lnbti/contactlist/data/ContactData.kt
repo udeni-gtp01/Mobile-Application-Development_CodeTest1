@@ -1,14 +1,20 @@
 package lk.lnbti.contactlist.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * Represents a contact with a name and phone number.
  *
  * @property name The name of the contact.
  * @property phone The phone number of the contact.
  */
+@Entity(tableName = "contact_table")
 data class Contact(
     var name: String,
     var phone: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
 )
 
 /**

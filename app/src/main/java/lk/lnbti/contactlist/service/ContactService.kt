@@ -27,14 +27,14 @@ interface ContactService {
      * @param originalContactName The name of the contact to update.
      * @param updatedContact The updated contact information.
      */
-    suspend fun updateContact(originalContactName: String, updatedContact: Contact)
+    suspend fun updateContact(updatedContact: Contact)
 
     /**
      * Deletes a contact from the contact list by name.
      *
      * @param contactName The name of the contact to delete.
      */
-    suspend fun deleteContact(contactName: String)
+    suspend fun deleteContact(contactId: Int)
 
     /**
      * Searches for contacts that match the given query.

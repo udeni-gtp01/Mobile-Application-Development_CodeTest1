@@ -19,7 +19,7 @@ class EditContactViewModel(private val contactService: ContactService) :
     var id: Int = 0
 
     // Original contact name to track changes
-    private var originalContactName: String = ""
+    //private var originalContactName: String = ""
 
     // Mutable state properties to hold updated contact's name and phone number
     var updatedContactName by mutableStateOf("")
@@ -76,9 +76,9 @@ class EditContactViewModel(private val contactService: ContactService) :
     fun searchContact(contactId: Int?) {
         viewModelScope.launch {
             contactId?.let {
-                var contact = contactService.getContact(contactId)
+                val contact = contactService.getContact(contactId)
                 contact?.let {
-                    originalContactName = contact.name
+                    id = contact.id
                     updatedContactName = contact.name
                     updatedContactPhone = contact.phone
                 }
@@ -93,14 +93,10 @@ class EditContactViewModel(private val contactService: ContactService) :
      */
     fun saveContact(): Int {
         viewModelScope.launch {
-            updatedContactName?.let {
-                contactService.updateContact(
-                    originalContactName = originalContactName,
-                    updatedContact = Contact(updatedContactName, updatedContactPhone)
-                )
-                ContactListUiState.loadContactList(contactService.loadAllContacts())
-            }
-            originalContactName = updatedContactName
+            contactService.updateContact(
+                updatedContact = Contact(updatedContactName, updatedContactPhone, id)
+            )
+            ContactListUiState.loadContactList(contactService.loadAllContacts())
         }
         return resetContact()
     }
@@ -111,10 +107,8 @@ class EditContactViewModel(private val contactService: ContactService) :
      * @return The original contact name before editing.
      */
     fun resetContact(): Int {
-        var tempContactName = originalContactName
         updatedContactName = ""
         updatedContactPhone = ""
-        originalContactName = ""
         return id
     }
 }

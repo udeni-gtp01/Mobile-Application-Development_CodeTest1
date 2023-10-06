@@ -36,7 +36,7 @@ fun ContactInfoScreen(
     contactInfoViewModel: ContactInfoViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onCancelButtonClicked: () -> Unit,
     onDeleteButtonClicked: () -> Unit,
-    onEditButtonClicked: (String) -> Unit,
+    onEditButtonClicked: (Int) -> Unit,
 ) {
     contactInfoViewModel.searchContact(contactId)
     Column(
@@ -86,7 +86,7 @@ fun ContactInfoScreen(
         ) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { contactInfoViewModel.contact?.let { onEditButtonClicked(it.name) } }
+                onClick = { contactInfoViewModel.contact?.let { onEditButtonClicked(it.id) } }
             ) {
                 Text(
                     text = stringResource(R.string.edit),

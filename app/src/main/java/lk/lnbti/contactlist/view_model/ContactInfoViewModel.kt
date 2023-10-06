@@ -28,7 +28,7 @@ class ContactInfoViewModel(private val contactService: ContactService) :
     fun searchContact(contactId: Int?) {
         viewModelScope.launch {
             contactId?.let {
-                contact = contactService.getContact(contactId.toInt())
+                contact = contactService.getContact(contactId)
             }
         }
 
@@ -41,7 +41,7 @@ class ContactInfoViewModel(private val contactService: ContactService) :
         viewModelScope.launch {
             contact?.let {
                 contactService.deleteContact(
-                    contactName = it.name,
+                    contactId = it.id,
                 )
                 ContactListUiState.loadContactList(contactService.loadAllContacts())
             }

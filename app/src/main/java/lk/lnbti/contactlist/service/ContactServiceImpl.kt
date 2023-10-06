@@ -30,7 +30,7 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      *
      * @param contact The [Contact] instance to be added.
      */
-    override fun addContact(contact: Contact):Long {
+    override fun addContact(contact: Contact): Long {
         ContactData.contacts.add(contact)
         ContactListUiState.loadContactList(ContactData.contacts)
         return 0
@@ -39,17 +39,11 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
     /**
      * Updates an existing contact with new information.
      *
-     * @param originalContactName The name of the contact to be updated.
      * @param updatedContact The updated [Contact] information.
      */
-    override suspend fun updateContact(originalContactName: String, updatedContact: Contact) {
+    override suspend fun updateContact(updatedContact: Contact) {
         withContext(Dispatchers.IO) {
-            val contact = contactDao.findByName(originalContactName)
-            contact?.let {
-                it.name = updatedContact.name
-                it.phone = updatedContact.phone
-                contactDao.update(it)
-            }
+            contactDao.update(updatedContact)
         }
     }
 
@@ -58,9 +52,9 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      *
      * @param contactName The name of the contact to be deleted.
      */
-    override suspend fun deleteContact(contactName: String) {
+    override suspend fun deleteContact(contactId: Int) {
         withContext(Dispatchers.IO) {
-            val contact = contactDao.findByName(contactName)
+            val contact = contactDao.findById(contactId)
             contact?.let {
                 contactDao.delete(it)
             }

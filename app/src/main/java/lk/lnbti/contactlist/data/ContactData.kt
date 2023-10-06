@@ -1,6 +1,5 @@
 package lk.lnbti.contactlist.data
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -29,7 +28,7 @@ object ContactData {
         Contact(
             name = "Udeni", phone = "1234567890"
         ),
-       /* Contact(
+        Contact(
             name = "Sara", phone = "0784567890"
         ),
         Contact(
@@ -52,7 +51,7 @@ object ContactData {
         ),
         Contact(
             name = "Raj", phone = "0733456789"
-        ),*/
+        ),
     )
 }
 

@@ -1,6 +1,7 @@
 package lk.lnbti.contactlist.service
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import lk.lnbti.contactlist.dao.ContactDao
 import lk.lnbti.contactlist.data.Contact
@@ -30,10 +31,16 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
      *
      * @param contact The [Contact] instance to be added.
      */
-    override fun addContact(contact: Contact): Long {
-        ContactData.contacts.add(contact)
-        ContactListUiState.loadContactList(ContactData.contacts)
-        return 0
+    override suspend fun addContact(contact: Contact): Long {
+        return withContext(Dispatchers.IO) {
+            return@withContext async {
+                try {
+                    contactDao.insert(contact)
+                } catch (e: Exception) {
+                    0
+                }
+            }.await()
+        }
     }
 
     /**
@@ -48,9 +55,9 @@ class ContactServiceImpl(private val contactDao: ContactDao) : ContactService {
     }
 
     /**
-     * Deletes a contact by its name.
+     * Deletes a contact by its id.
      *
-     * @param contactName The name of the contact to be deleted.
+     * @param contactId The id of the contact to be deleted.
      */
     override suspend fun deleteContact(contactId: Int) {
         withContext(Dispatchers.IO) {

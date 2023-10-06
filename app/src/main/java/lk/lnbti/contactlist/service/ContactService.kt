@@ -19,7 +19,7 @@ interface ContactService {
      *
      * @param contact The contact to be added.
      */
-    fun addContact(contact: Contact):Long
+    suspend fun addContact(contact: Contact): Long
 
     /**
      * Updates an existing contact's information.
@@ -48,5 +48,5 @@ interface ContactService {
      * Searches for all contacts.
      *
      */
-    suspend fun loadAllContacts():List<Contact>
+    suspend fun loadAllContacts(): List<Contact>
 }

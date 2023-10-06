@@ -16,7 +16,6 @@ class ContactListApplication:Application() {
 var context:Context=this
     override fun onCreate() {
         super.onCreate()
-        Log.d("oyasumi","application started oncreate")
         container = AppDataContainer(this)
     }
     fun CreationExtras.contactListApplication(): ContactListApplication =

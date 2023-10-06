@@ -17,6 +17,7 @@
 package lk.lnbti.contactlist.view_model
 
 import android.app.Application
+import android.graphics.drawable.AdaptiveIconDrawable
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
@@ -39,6 +40,10 @@ object AppViewModelProvider {
         // Initializer for EditContactViewModel
         initializer {
             EditContactViewModel(contactListApplication().container.contactService)
+        }
+        // Initializer for AddContactViewModel
+        initializer {
+            AddContactViewModel(contactListApplication().container.contactService)
         }
     }
 }

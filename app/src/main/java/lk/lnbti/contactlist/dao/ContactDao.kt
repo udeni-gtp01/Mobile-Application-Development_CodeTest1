@@ -1,6 +1,5 @@
 package lk.lnbti.contactlist.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -12,8 +11,9 @@ import lk.lnbti.contactlist.data.Contact
 interface ContactDao {
     @Query("select * from contact_table order by name asc")
     suspend fun getAllContacts(): List<Contact>
+
     @Insert
-    fun insert(contact: Contact)
+    suspend fun insert(contact: Contact): Long
 
     @Update
     suspend fun update(contact: Contact)

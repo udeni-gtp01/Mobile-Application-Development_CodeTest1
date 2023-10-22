@@ -3,15 +3,16 @@ package lk.lnbti.contactlist.view_model
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import lk.lnbti.contactlist.data.Contact
-import lk.lnbti.contactlist.data.ContactData
+import lk.lnbti.contactlist.service.ContactService
+import lk.lnbti.contactlist.service.ContactServiceImpl
 
 /**
  * ViewModel class responsible for managing the UI state and interactions related to editing a contact.
  */
-class EditContactViewModel : ViewModel() {
+class EditContactViewModel(private val contactService: ContactService = ContactServiceImpl.getInstance()) :
+    ViewModel() {
 
     // Original contact name to track changes
     private var originalContactName: String = ""
@@ -21,22 +22,28 @@ class EditContactViewModel : ViewModel() {
     var updatedContactPhone by mutableStateOf("")
 
     // Mutable state properties to track the validity of the updated contact name and phone number
-    var isValidContactName by mutableStateOf(true)
-    var isValidPhone by mutableStateOf(true)
+    var isContactNameError by mutableStateOf(false)
+    var isPhoneError by mutableStateOf(false)
 
-    /**
-     * Validates the entered updated contact name and updates the [isValidContactName] property accordingly.
-     */
-    private fun validateContactName() {
-        isValidContactName = !updatedContactName.isBlank()
+    fun isValidationSuccessful(): Boolean {
+        validateContactName()
+        validatePhone()
+        return (!isContactNameError && !isPhoneError)
     }
 
     /**
-     * Validates the entered updated contact phone number and updates the [isValidPhone] property accordingly.
+     * Validates the entered contact name and updates the [isContactNameError] property accordingly.
+     */
+    private fun validateContactName() {
+        isContactNameError = updatedContactName.isBlank()
+    }
+
+    /**
+     * Validates the entered contact phone number and updates the [isPhoneError] property accordingly.
      */
     private fun validatePhone() {
-        isValidPhone =
-            !(updatedContactPhone.isBlank() || updatedContactPhone.length != 10 || !updatedContactPhone.isDigitsOnly())
+        isPhoneError =
+            (updatedContactPhone.isBlank() || updatedContactPhone.length != 10 || !updatedContactPhone.all { it.isDigit() })
     }
 
     /**
@@ -46,7 +53,6 @@ class EditContactViewModel : ViewModel() {
      */
     fun updateContactName(contactName: String) {
         updatedContactName = contactName
-        validateContactName()
     }
 
     /**
@@ -56,7 +62,6 @@ class EditContactViewModel : ViewModel() {
      */
     fun updateContactPhone(contactPhone: String) {
         updatedContactPhone = contactPhone
-        validatePhone()
     }
 
     /**
@@ -66,7 +71,7 @@ class EditContactViewModel : ViewModel() {
      */
     fun searchContact(contactName: String?) {
         contactName?.let {
-            var contact = ContactData.getContact(it)
+            var contact = contactService.getContact(contactName)
             contact?.let {
                 originalContactName = contact.name
                 updatedContactName = contact.name
@@ -82,7 +87,7 @@ class EditContactViewModel : ViewModel() {
      */
     fun saveContact(): String {
         updatedContactName?.let {
-            ContactData.updateContact(
+            contactService.updateContact(
                 originalContactName = originalContactName,
                 updatedContact = Contact(updatedContactName, updatedContactPhone)
             )

@@ -60,12 +60,13 @@ fun AddContactScreen(
                         singleLine = true,
                         onValueChange = { addContactViewModel.updateContactName(it) },
                         label = {
-                            if (addContactViewModel.isValidContactName) {
-                                Text(stringResource(R.string.contact_name))
-                            } else {
+                            if (addContactViewModel.isContactNameError) {
                                 Text(stringResource(R.string.invalid_contact_name))
+                            } else {
+                                Text(stringResource(R.string.contact_name))
                             }
                         },
+                        isError = addContactViewModel.isContactNameError,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -78,12 +79,13 @@ fun AddContactScreen(
                         singleLine = true,
                         onValueChange = { addContactViewModel.updateContactPhone(it) },
                         label = {
-                            if (addContactViewModel.isValidPhone) {
-                                Text(stringResource(R.string.contact_phone))
-                            } else {
+                            if (addContactViewModel.isPhoneError) {
                                 Text(stringResource(R.string.invalid_contact_phone))
+                            } else {
+                                Text(stringResource(R.string.contact_phone))
                             }
                         },
+                        isError = addContactViewModel.isPhoneError,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -97,7 +99,7 @@ fun AddContactScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    if (addContactViewModel.isValidContactName && addContactViewModel.isValidPhone) {
+                    if (addContactViewModel.isValidationSuccessful()) {
                         onSaveButtonClicked(addContactViewModel.saveNewContact())
                     }
                 }
